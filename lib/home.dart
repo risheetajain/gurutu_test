@@ -16,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<UserModel>? list = [];
   @override
   void initState() {
-    _loadFromApi("cancer");
+    _loadFromApi();
 
     super.initState();
   }
@@ -62,17 +62,17 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : list!.isNotEmpty
+          : list != null && list!.isNotEmpty
               ? _buildEmployeeListView()
               : const Center(child: Text('No Data Found')),
     );
   }
 
-  _loadFromApi(String query) async {
+  _loadFromApi() async {
     setState(() {
       isLoading = true;
     });
-    list = await ApiSevices.getBooks();
+    list = await ApiServices.getUsers();
 
     setState(() {
       isLoading = false;

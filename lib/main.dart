@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
               if (snapshot.data != null) {
                 return HomeScreen();
               } else {
-                return const Home();
+                return const LoginScreen();
               }
             }
           }),
@@ -40,69 +40,3 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
-
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  final List _posts = [];
-  bool showData = false;
-  @override
-  void initState() {
-    super.initState();
-    ApiSevices.getPosts().then((value) {
-      print(value);
-      if (value.isNotEmpty) {
-        value['result'].forEach((element) {
-          // _posts.add(Result.fromJson(element));
-          showData = true;
-          setState(() {});
-        });
-      } else {
-        showData = true;
-        setState(() {});
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: mainColor,
-        title: const Text('Home'),
-      ),
-      body: showData
-          ? _posts.isNotEmpty
-              ? ListView.builder(
-                  padding: const EdgeInsets.all(16),
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        Card(
-                          child: ListTile(
-                            title: Text(_posts[index].title!),
-                            subtitle: Text(_posts[index].description!),
-                            leading: CircleAvatar(
-                              backgroundImage:
-                                  NetworkImage(_posts[index].imgpath!),
-                            ),
-                          ),
-                        ),
-                        const Divider()
-                      ],
-                    );
-                  },
-                  itemCount: _posts.length)
-              : const Text('No Data')
-          : Center(
-              child: CircularProgressIndicator(
-                color: mainColor,
-              ),
-            ),
-    );
-  }
-}
